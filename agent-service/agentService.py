@@ -6,21 +6,21 @@ app = Flask(__name__)
 agents = [
     {
         "agent_code": 1,
-        "name": "John 5566 Doe",
+        "name": "John Doe",
         "age": 30,
         "gender": "Male",
         "products":["Life Insurance", "Health Insurance"],
      },
     {
         "agent_code": 2,
-        "name": "Jane e55444 Smith",
+        "name": "Jane Smith",
         "age": 25,
         "gender": "Female",       
         "products":["Life Insurance", "Health Insurance", "Car Insurance"],
     },
         {
         "agent_code": 3,
-        "name": "Kim 5r55 Kate",
+        "name": "Kim Kate",
         "age": 23,
         "gender": "Female",       
         "products":["Life Insurance", "Health Insurance", "Car Insurance", "Travel Insurance"],
