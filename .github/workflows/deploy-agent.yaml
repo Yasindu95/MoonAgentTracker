@@ -57,7 +57,7 @@ jobs:
 
       - name: Update kubeconfig for EKS
         run: |
-          aws eks update-kubeconfig --name moonagent-cluster --region $AWS_REGION
+          aws eks update-kubeconfig --name MoonInsurance --region $AWS_REGION
 
       - name: Restart agent-service deployment
         run: |
