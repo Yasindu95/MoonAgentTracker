@@ -1,0 +1,72 @@
+name: Build & Deploy All Services to EKS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "agent-service/**"
+      - "integration-service/**"
+      - "notification-service/**"
+      - ".github/workflows/deploy.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Build & Deploy to EKS
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-southeast-1
+      ECR_REGISTRY: 796000356109.dkr.ecr.ap-southeast-1.amazonaws.com
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::796000356109:role/GitHubActionsWorkflowEKSDeployRole
+          role-session-name: github-eks-session
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push agent-service
+        run: |
+          docker buildx create --use || true
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t $ECR_REGISTRY/agent-service:latest ./agent-service \
+            --push
+
+      - name: Build & push integration-service
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t $ECR_REGISTRY/integration-service:latest ./integration-service \
+            --push
+
+      - name: Build & push notification-service
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t $ECR_REGISTRY/notification-service:latest ./notification-service \
+            --push
+
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --name moonagent-cluster --region $AWS_REGION
+
+      - name: Restart agent-service deployment
+        run: |
+          kubectl rollout restart deployment agent-service-deployment
+
+      - name: Restart integration-service deployment
+        run: |
+          kubectl rollout restart deployment integration-service-deployment
+
+      - name: Restart notification-service deployment
+        run: |
+          kubectl rollout restart deployment notification-service-deployment
