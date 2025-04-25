@@ -24,6 +24,13 @@ agents = [
         "age": 23,
         "gender": "Female",       
         "products":["Life Insurance", "Health Insurance", "Car Insurance", "Travel Insurance"],
+    },
+        {
+        "agent_code": 4,
+        "name": "Yasindu",
+        "age": 23,
+        "gender": "Female",       
+        "products":["Life Insurance", "Health Insurance", "Car Insurance", "Travel Insurance"],
     }
 ]
 
