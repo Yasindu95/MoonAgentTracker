@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Hardcoded patient data
 agents = [
     {
-        "agent_code": 3,
+        "agent_code": 1,
         "name": "John Dorry",
         "age": 30,
         "gender": "Male",
