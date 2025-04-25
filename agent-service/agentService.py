@@ -12,7 +12,7 @@ agents = [
         "products":["Life Insurance", "Health Insurance"],
      },
     {
-        "agent_code": 6,
+        "agent_code": 3,
         "name": "Jane Smith",
         "age": 25,
         "gender": "Female",       
